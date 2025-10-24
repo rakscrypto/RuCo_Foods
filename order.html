@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - RuCo Foods</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <div class="logo">
+                    <i class="fas fa-popcorn"></i>
+                    RuCo <span>Foods</span>
+                </div>
+                <div class="nav-container" id="navContainer">
+                    <nav>
+                        <ul class="nav-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="products.html">Products</a></li>
+                            <li><a href="order.html" class="active">Order</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Order Form Section -->
+    <section class="order-page">
+        <div class="container">
+            <h1>Place Your Order</h1>
+            <p class="page-intro">Fill in your details and we'll prepare your delicious treats</p>
+            
+            <div class="order-container">
+                <div class="order-form-container">
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Delivery Address *</label>
+                            <textarea id="address" name="address" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="receipt">Upload Payment Receipt (Optional)</label>
+                            <input type="file" id="receipt" name="receipt" accept="image/*,.pdf">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Order Summary</label>
+                            <div id="orderSummary" class="order-summary">
+                                <!-- Order items will be displayed here -->
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="previewOrder" class="btn btn-primary">Preview Order</button>
+                    </form>
+                </div>
+                
+                <div class="order-preview" id="orderPreview">
+                    <h3>Order Preview</h3>
+                    <div id="previewContent">
+                        <p>Your order details will appear here after you click "Preview Order"</p>
+                    </div>
+                    <button id="sendWhatsApp" class="btn btn-whatsapp" disabled>
+                        <i class="fab fa-whatsapp"></i> Send Order via WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-popcorn"></i>
+                    RuCo Foods
+                </div>
+                <p class="footer-tagline">Beyond Ordinary ✨</p>
+                <div class="social-links">
+                    <a href="https://wa.me/2347062260417" class="social-link whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp Order
+                    </a>
+                    <a href="#" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                        Instagram
+                    </a>
+                    <a href="#" class="social-link facebook">
+                        <i class="fab fa-facebook"></i>
+                        Facebook
+                    </a>
+                </div>
+                <p class="copyright">&copy; 2023 RuCo Foods. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
