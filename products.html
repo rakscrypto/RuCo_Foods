@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - RuCo Foods</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <div class="logo">
+                    <i class="fas fa-popcorn"></i>
+                    RuCo <span>Foods</span>
+                </div>
+                <div class="nav-container" id="navContainer">
+                    <nav>
+                        <ul class="nav-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="products.html" class="active">Products</a></li>
+                            <li><a href="order.html">Order</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Products Section -->
+    <section class="products-page">
+        <div class="container">
+            <h1>Our Products</h1>
+            <p class="page-intro">Select your favorite treats and customize your order</p>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded by JavaScript -->
+            </div>
+            
+            <div class="cart-summary">
+                <h3>Your Selection</h3>
+                <div id="cartItems"></div>
+                <div class="cart-actions">
+                    <a href="order.html" class="btn btn-primary" id="proceedToOrder">Proceed to Order</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-popcorn"></i>
+                    RuCo Foods
+                </div>
+                <p class="footer-tagline">Beyond Ordinary ✨</p>
+                <div class="social-links">
+                    <a href="https://wa.me/2347062260417" class="social-link whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp Order
+                    </a>
+                    <a href="#" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                        Instagram
+                    </a>
+                    <a href="#" class="social-link facebook">
+                        <i class="fab fa-facebook"></i>
+                        Facebook
+                    </a>
+                </div>
+                <p class="copyright">&copy; 2023 RuCo Foods. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
