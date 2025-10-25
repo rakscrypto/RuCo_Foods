@@ -3,9 +3,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const navContainer = document.getElementById('navContainer');
     
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
+    // Create overlay for mobile menu
+    const overlay = document.createElement('div');
+    overlay.className = 'nav-overlay';
+    document.body.appendChild(overlay);
+    
+    if (mobileMenuBtn && navContainer) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             navContainer.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Toggle menu icon
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navContainer.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close menu when clicking on overlay
+        overlay.addEventListener('click', function() {
+            navContainer.classList.remove('active');
+            overlay.classList.remove('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
         });
     }
     
@@ -13,8 +39,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-links a');
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
-            navContainer.classList.remove('active');
+            if (navContainer) {
+                navContainer.classList.remove('active');
+                overlay.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
         });
+    });
+    
+    // Close mobile menu when clicking outside on larger screens
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            if (navContainer) {
+                navContainer.classList.remove('active');
+                overlay.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
     });
     
     // Load products on products page
@@ -226,7 +273,6 @@ function updateQuantity(productId, newQuantity) {
 function setupOrderPage() {
     const previewOrderBtn = document.getElementById('previewOrder');
     const sendWhatsAppBtn = document.getElementById('sendWhatsApp');
-    const orderForm = document.getElementById('orderForm');
     
     // Display order summary from cart
     const orderSummary = document.getElementById('orderSummary');
@@ -240,64 +286,68 @@ function setupOrderPage() {
         orderSummary.innerHTML = '<p>No items in your cart. <a href="products.html">Add some products first</a>.</p>';
     }
     
-    previewOrderBtn.addEventListener('click', function() {
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const receipt = document.getElementById('receipt').files[0];
-        
-        // Basic validation
-        if (!name || !phone || !address) {
-            alert('Please fill in all required fields (Name, Phone, Address)');
-            return;
-        }
-        
-        if (cart.length === 0) {
-            alert('Please add some products to your order first');
-            return;
-        }
-        
-        // Generate preview
-        const previewContent = document.getElementById('previewContent');
-        let orderDetails = '';
-        cart.forEach(item => {
-            orderDetails += `${item.name} - Quantity: ${item.quantity}\n`;
+    if (previewOrderBtn) {
+        previewOrderBtn.addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const receipt = document.getElementById('receipt').files[0];
+            
+            // Basic validation
+            if (!name || !phone || !address) {
+                alert('Please fill in all required fields (Name, Phone, Address)');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                alert('Please add some products to your order first');
+                return;
+            }
+            
+            // Generate preview
+            const previewContent = document.getElementById('previewContent');
+            let orderDetails = '';
+            cart.forEach(item => {
+                orderDetails += `${item.name} - Quantity: ${item.quantity}\n`;
+            });
+            
+            let receiptInfo = 'No receipt uploaded';
+            if (receipt) {
+                receiptInfo = `Receipt uploaded: ${receipt.name}`;
+            }
+            
+            const previewHTML = `
+                <div class="preview-item">
+                    <strong>Name:</strong> ${name}
+                </div>
+                <div class="preview-item">
+                    <strong>Phone:</strong> ${phone}
+                </div>
+                <div class="preview-item">
+                    <strong>Address:</strong> ${address}
+                </div>
+                <div class="preview-item">
+                    <strong>Order Details:</strong><br>
+                    <pre>${orderDetails}</pre>
+                </div>
+                <div class="preview-item">
+                    <strong>Receipt:</strong> ${receiptInfo}
+                </div>
+            `;
+            
+            previewContent.innerHTML = previewHTML;
+            
+            // Enable WhatsApp button
+            if (sendWhatsAppBtn) {
+                sendWhatsAppBtn.disabled = false;
+                
+                // Store order data for WhatsApp
+                sendWhatsAppBtn.onclick = function() {
+                    sendOrderViaWhatsApp(name, phone, address, receiptInfo, orderDetails);
+                };
+            }
         });
-        
-        let receiptInfo = 'No receipt uploaded';
-        if (receipt) {
-            receiptInfo = `Receipt uploaded: ${receipt.name}`;
-        }
-        
-        const previewHTML = `
-            <div class="preview-item">
-                <strong>Name:</strong> ${name}
-            </div>
-            <div class="preview-item">
-                <strong>Phone:</strong> ${phone}
-            </div>
-            <div class="preview-item">
-                <strong>Address:</strong> ${address}
-            </div>
-            <div class="preview-item">
-                <strong>Order Details:</strong><br>
-                <pre>${orderDetails}</pre>
-            </div>
-            <div class="preview-item">
-                <strong>Receipt:</strong> ${receiptInfo}
-            </div>
-        `;
-        
-        previewContent.innerHTML = previewHTML;
-        
-        // Enable WhatsApp button
-        sendWhatsAppBtn.disabled = false;
-        
-        // Store order data for WhatsApp
-        sendWhatsAppBtn.onclick = function() {
-            sendOrderViaWhatsApp(name, phone, address, receiptInfo, orderDetails);
-        };
-    });
+    }
 }
 
 function sendOrderViaWhatsApp(name, phone, address, receiptInfo, orderDetails) {
