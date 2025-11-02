@@ -76,80 +76,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Product data
+// Product data with images
 const products = [
-    {
+   {
         id: 1,
-        name: "Caramel Popcorn",
-        description: "Sweet, buttery caramel coated popcorn with a perfect crunch",
-        price: "₦1,500",
-        icon: "🍿",
+        name: "Churro Popcorn",
+        description: "Sweet, buttery churro coated popcorn with a perfect crunch",
+        price: "₦1,000",
+        image: "11.PNG",
         category: "popcorn"
     },
     {
         id: 2,
-        name: "Cheese Popcorn",
+        name: "Chocolate Popcorn",
         description: "Savory cheese flavored popcorn for a tasty snack",
-        price: "₦1,500",
-        icon: "🍿",
+        price: "₦1,000",
+        image: "13.PNG",
         category: "popcorn"
     },
     {
         id: 3,
-        name: "Chocolate Popcorn",
+        name: "Cookie Popcorn",
         description: "Rich chocolate drizzled popcorn for chocolate lovers",
-        price: "₦1,800",
-        icon: "🍿",
+        price: "₦1,000",
+        image: "10.PNG",
         category: "popcorn"
     },
     {
         id: 4,
-        name: "Classic Banana Bread",
-        description: "Moist and flavorful homemade banana bread",
-        price: "₦2,500",
-        icon: "🍌",
-        category: "banana-bread"
+        name: "Muddy Popcorn",
+        description: "Moist and flavorful popcorn",
+        price: "₦1,500",
+        image: "12.PNG",
+        category: "popcorn"
     },
     {
         id: 5,
         name: "Chocolate Chip Banana Bread",
         description: "Banana bread loaded with chocolate chips",
+        price: "₦1,500",
+        image: "15.png",
+        category: "banana-bread"
+    },
+    {
+        id: 5,
+        name: "Banana Bread",
+        description: "Banana bread loaded with love",
         price: "₦3,000",
-        icon: "🍌",
+        image: "14.png",
         category: "banana-bread"
     },
-    {
-        id: 6,
-        name: "Nutty Banana Bread",
-        description: "Banana bread with walnuts for extra crunch",
-        price: "₦3,200",
-        icon: "🍌",
-        category: "banana-bread"
-    },
-    {
-        id: 7,
-        name: "Brownies",
-        description: "Rich, fudgy chocolate brownies",
-        price: "₦1,800",
-        icon: "🍫",
-        category: "sweet-treats"
-    },
-    {
-        id: 8,
-        name: "Cookies",
-        description: "Soft and chewy homemade cookies",
-        price: "₦1,200",
-        icon: "🍪",
-        category: "sweet-treats"
-    },
-    {
-        id: 9,
-        name: "Chocolate Bark",
-        description: "Delicious chocolate bark with various toppings",
-        price: "₦2,000",
-        icon: "🍫",
-        category: "sweet-treats"
-    }
 ];
 
 // Cart functionality
@@ -233,16 +209,16 @@ function loadProducts() {
             html += `
                 <div class="product-card pop-in">
                     <div class="product-image">
-                        ${product.icon}
+                        <img src="${product.image}" alt="${product.name}">
                     </div>
                     <div class="product-content">
                         <h3 class="product-title">${product.name}</h3>
                         <p class="product-description">${product.description}</p>
                         <div class="product-price">${product.price}</div>
                         <div class="quantity-selector">
-                            <button class="quantity-btn" onclick="updateQuantity(${product.id}, ${quantity - 1})">-</button>
-                            <input type="number" class="quantity-input" id="quantity-${product.id}" value="${quantity}" min="0" onchange="updateQuantity(${product.id}, this.value)">
-                            <button class="quantity-btn" onclick="updateQuantity(${product.id}, ${quantity + 1})">+</button>
+                            <button class="quantity-btn" onclick="decreaseQuantity(${product.id})">-</button>
+                            <input type="number" class="quantity-input" id="quantity-${product.id}" value="${quantity}" min="0" onchange="updateQuantityFromInput(${product.id})">
+                            <button class="quantity-btn" onclick="increaseQuantity(${product.id})">+</button>
                         </div>
                     </div>
                 </div>
@@ -253,14 +229,37 @@ function loadProducts() {
     }
 }
 
-function updateQuantity(productId, newQuantity) {
-    newQuantity = parseInt(newQuantity);
-    if (newQuantity < 0) newQuantity = 0;
-    
+// New quantity functions to fix the issue
+function increaseQuantity(productId) {
     const input = document.getElementById(`quantity-${productId}`);
-    if (input) {
-        input.value = newQuantity;
+    let currentQuantity = parseInt(input.value) || 0;
+    const newQuantity = currentQuantity + 1;
+    input.value = newQuantity;
+    
+    if (newQuantity === 0) {
+        removeFromCart(productId);
+    } else {
+        addToCart(productId, newQuantity);
     }
+}
+
+function decreaseQuantity(productId) {
+    const input = document.getElementById(`quantity-${productId}`);
+    let currentQuantity = parseInt(input.value) || 0;
+    const newQuantity = Math.max(0, currentQuantity - 1);
+    input.value = newQuantity;
+    
+    if (newQuantity === 0) {
+        removeFromCart(productId);
+    } else {
+        addToCart(productId, newQuantity);
+    }
+}
+
+function updateQuantityFromInput(productId) {
+    const input = document.getElementById(`quantity-${productId}`);
+    let newQuantity = parseInt(input.value) || 0;
+    if (newQuantity < 0) newQuantity = 0;
     
     if (newQuantity === 0) {
         removeFromCart(productId);
